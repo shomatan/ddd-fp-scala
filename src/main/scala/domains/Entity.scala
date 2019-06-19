@@ -1,6 +1,6 @@
 package domains
 
-class Id[A](value: A)
+trait Id extends Any
 
 trait Entity[ID] {
   val id: ID
