@@ -20,3 +20,6 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 )
 
+assemblyJarName in assembly := {
+  s"${name.value}.jar"
+}
