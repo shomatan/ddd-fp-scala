@@ -1,1 +1,2 @@
-# ddd-fp-scala
+# Domain Modeling Made Functional on Scala
+
