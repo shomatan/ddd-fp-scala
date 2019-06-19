@@ -16,6 +16,7 @@ libraryDependencies ++= Seq(
   "io.monix"      %% "monix"          % monixVersion,
   "io.monix"      %% "monix-eval"     % monixVersion,
   "io.monix"      %% "monix-reactive" % monixVersion,
+  "com.chuusai"   %% "shapeless"      % "2.3.3",
 
   "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 )

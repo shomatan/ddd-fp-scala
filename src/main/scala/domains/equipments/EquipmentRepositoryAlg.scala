@@ -2,6 +2,7 @@ package domains.equipments
 
 import core.types.Result.Result
 import domains.Id
+import domains.equipments.tags.ValidatedEquipment
 
 trait EquipmentRepositoryAlg[F[_]] {
   def findById(id: Id[ValidatedEquipment]): Result[F, EquipmentError, Option[ValidatedEquipment]]

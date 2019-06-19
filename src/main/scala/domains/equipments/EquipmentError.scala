@@ -4,5 +4,5 @@ import domains.Id
 
 sealed trait EquipmentError
 
-case class EquipmentNotFound(id: Id[ValidatedEquipment]) extends EquipmentError
+case class EquipmentNotFound(id: Id[Equipment]) extends EquipmentError
 

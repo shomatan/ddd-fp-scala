@@ -2,6 +2,7 @@ package domains.equipments
 
 import cats.Monad
 import core.types.Result.Result
+import domains.equipments.tags.{UnValidatedEquipment, ValidatedEquipment}
 
 class EquipmentService[F[_]: Monad](equipmentRepositoryAlg: EquipmentRepositoryAlg[F],
                                     placeRepositoryAlg: PlaceRepositoryAlg[F]) {
