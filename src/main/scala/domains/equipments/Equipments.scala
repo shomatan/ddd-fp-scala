@@ -1,11 +1,10 @@
 package domains.equipments
 
-import domains.{Entity, Id}
-
-case class EquipmentsId(value: Int) extends Id
+import domains.Entity
 
 case class Equipments(
   id: EquipmentsId,
   name: String,
-  place: Place
+  placeId: PlaceId
 ) extends Entity[EquipmentsId]
+
