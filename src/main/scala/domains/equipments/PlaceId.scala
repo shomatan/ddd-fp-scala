@@ -1,4 +1,4 @@
-package domains.places
+package domains.equipments
 
 import domains.Id
 

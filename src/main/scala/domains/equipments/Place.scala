@@ -1,7 +1,6 @@
-package domains.places
+package domains.equipments
 
 import domains.Entity
-
 
 case class Place(
   id: PlaceId,
