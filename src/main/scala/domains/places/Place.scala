@@ -1,4 +1,4 @@
-package domains.equipments
+package domains.places
 
 import domains.{Entity, Id}
 
