@@ -1,9 +1,10 @@
 package domains.equipments
 
 import core.types.Result.Result
+import domains.Id
 
 trait PlaceRepositoryAlg[F[_]] {
-  def findById(id: PlaceId): Result[F, EquipmentError, Option[Place]]
-  def store(place: Place): Result[F, EquipmentError, Place]
-  def delete(place: Place): Result[F, EquipmentError, Unit]
+  def findById(id: Id[ValidatedPlace]): Result[F, EquipmentError, Option[ValidatedPlace]]
+  def store(place: ValidatedPlace): Result[F, EquipmentError, ValidatedPlace]
+  def delete(place: ValidatedPlace): Result[F, EquipmentError, Unit]
 }

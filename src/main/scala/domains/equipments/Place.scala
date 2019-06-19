@@ -1,9 +1,15 @@
 package domains.equipments
 
-import domains.Entity
+import domains.Id
 
-case class Place(
-  id: PlaceId,
+case class ValidatedPlace(
+  id: Id[ValidatedPlace],
   name: String,
   description: Option[String]
-) extends Entity[PlaceId]
+)
+
+case class UnValidatedPlace(
+  id: Id[UnValidatedPlace],
+  name: UnValidatedPlaceName,
+  description: Option[String]
+)

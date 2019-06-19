@@ -5,12 +5,11 @@ import core.types.Result.Result
 
 class EquipmentService[F[_]: Monad](equipmentRepositoryAlg: EquipmentRepositoryAlg[F],
                                     placeRepositoryAlg: PlaceRepositoryAlg[F]) {
-  import core.types.Result.syntax._
 
-  def create(equipment: Equipment): Result[F, EquipmentError, Equipment] = {
-    for {
-      created <- equipmentRepositoryAlg.store(equipment).handleError
-    } yield created
+  def create(equipment: UnValidatedEquipment): Result[F, EquipmentError, ValidatedEquipment] = {
+//    for {
+//      created <- equipmentRepositoryAlg.store(equipment).handleError
+//    } yield created
 
     ???
   }
