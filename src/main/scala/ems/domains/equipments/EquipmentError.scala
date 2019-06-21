@@ -1,6 +1,6 @@
-package domains.equipments
+package ems.domains.equipments
 
-import domains.Id
+import ems.domains.Id
 
 sealed trait EquipmentError
 

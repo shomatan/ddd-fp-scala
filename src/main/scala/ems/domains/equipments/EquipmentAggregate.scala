@@ -1,4 +1,4 @@
-package domains.equipments
+package ems.domains.equipments
 
 case class EquipmentAggregate(
   equipment: Equipment,

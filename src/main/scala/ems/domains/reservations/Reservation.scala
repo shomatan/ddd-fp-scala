@@ -1,6 +1,6 @@
-package domains.reservations
+package ems.domains.reservations
 
-import domains.{Entity, Id}
+import ems.domains.{Entity, Id}
 
 case class Reservation(
   id: Id[Reservation]

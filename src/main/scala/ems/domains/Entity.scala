@@ -1,4 +1,4 @@
-package domains
+package ems.domains
 
 trait Entity[T] {
 
@@ -7,4 +7,3 @@ trait Entity[T] {
   def sameIdentity(b: Entity[T]): Boolean = this.id == b.id
 
 }
-

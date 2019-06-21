@@ -1,6 +1,6 @@
-package domains.equipments
+package ems.domains.equipments
 
-import core.types.Result.Result
+import ems.core.types.Result.Result
 
 class EquipmentService(equipmentRepositoryAlg: EquipmentRepositoryAlg,
                        placeRepositoryAlg: PlaceRepositoryAlg) {

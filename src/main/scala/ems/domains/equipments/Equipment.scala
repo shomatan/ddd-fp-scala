@@ -1,6 +1,6 @@
-package domains.equipments
+package ems.domains.equipments
 
-import domains.{Entity, Id}
+import ems.domains.{Entity, Id}
 
 case class EquipmentName(value: String) extends AnyVal
 

@@ -1,6 +1,6 @@
-package domains.reservations
+package ems.domains.reservations
 
-import core.types.{UnvalidatedTag, ValidatedTag}
+import ems.core.types.{UnvalidatedTag, ValidatedTag}
 import shapeless.tag.@@
 
 object tags {

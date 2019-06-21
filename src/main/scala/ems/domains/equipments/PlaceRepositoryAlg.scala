@@ -1,7 +1,7 @@
-package domains.equipments
+package ems.domains.equipments
 
-import core.types.Result.Result
-import domains.Id
+import ems.core.types.Result.Result
+import ems.domains.Id
 
 trait PlaceRepositoryAlg {
   def findById(id: Id[Place]): Result[EquipmentError, Option[Place]]
