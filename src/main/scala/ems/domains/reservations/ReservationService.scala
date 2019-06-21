@@ -1,34 +1,38 @@
 package ems.domains.reservations
 
-import ems.core.types.Result.AsyncResult
-import ems.domains.{DomainError, EntityNotFound, Id}
-import ems.domains.equipments.{Equipment, EquipmentRepositoryAlg}
+import ems.core.types.Result
+import ems.core.types.Result.Result
+import ems.domains.equipments.{Equipment, EquipmentChecked, EquipmentRepository, EquipmentState}
 import ems.domains.reservations.tags.{UnvalidatedReservation, ValidatedReservation}
+import ems.domains.{DomainError, EquipmentOutOfStock}
 
-class ReservationService(equipmentRepository: EquipmentRepositoryAlg) {
+class ReservationService(equipmentRepository: EquipmentRepository) {
 
-  implicit class OptionOps[A](optValue: Option[A]) {
-    def orNotFound(id: Id[A]): Either[DomainError, A] =
-      optValue.map(Right(_)).getOrElse(Left(EntityNotFound(id)))
-  }
+  import ems.core.types.Result.syntax._
 
-  def reserve(unvalidatedReservation: UnvalidatedReservation): AsyncResult[DomainError, Reservation] = {
+  def reserve(unvalidatedReservation: UnvalidatedReservation): Result[DomainError, Reservation] = {
 
-//    for {
-//      validated <- validate(unvalidatedReservation)
-//      checked <- checkEquipment(validated)
-//      _ <-
-//    } yield ()
+    for {
+      validated <- validate(unvalidatedReservation).handleError
+      equipment <- findEquipment(validated).handleError
+      checked <- checkEquipment(equipment).handleError
+      _ <- storeEquipment(checked).handleError
+    } yield ()
 
     ???
   }
 
-  def validate(unvalidated: UnvalidatedReservation): AsyncResult[DomainError, ValidatedReservation] = ???
+  def validate(unvalidated: UnvalidatedReservation): Result[DomainError, ValidatedReservation] = ???
 
-  def checkEquipment(validatedReservation: ValidatedReservation): AsyncResult[DomainError, Equipment] =
-    equipmentRepository.findById(validatedReservation.equipmentId).map {
-      case Right(optEquipment) => optEquipment orNotFound validatedReservation.equipmentId
-      case Left(error) => Left(error)
+  def findEquipment(validatedReservation: ValidatedReservation): Result[DomainError, Equipment] =
+    equipmentRepository.findById(validatedReservation.equipmentId) orNotFound validatedReservation.equipmentId
+
+  def checkEquipment(equipment: Equipment): Result[DomainError, EquipmentChecked] =
+    equipment.state match {
+      case EquipmentState.Possible => Result.success(EquipmentChecked(Equipment.preReserve(equipment)))
+      case _ => Result.error(EquipmentOutOfStock(equipment))
     }
+
+  def storeEquipment(checkedEquipment: EquipmentChecked): Result[DomainError, Unit] = ??? // TODO: return a result
 
 }

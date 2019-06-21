@@ -11,5 +11,9 @@ case class Equipment(
   state: EquipmentState
 ) extends Entity[Equipment]
 
+object Equipment {
+  def preReserve(equipment: Equipment): Equipment =
+    equipment.copy(state = EquipmentState.Possible)
+}
 
-
+case class EquipmentChecked(equipment: Equipment)
