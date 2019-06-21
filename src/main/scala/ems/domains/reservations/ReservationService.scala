@@ -1,10 +1,9 @@
 package ems.domains.reservations
 
-import ems.core.types.Result
 import ems.core.types.Result.Result
-import ems.domains.equipments.{Equipment, EquipmentChecked, EquipmentRepository, EquipmentState}
+import ems.domains.equipments.{Equipment, EquipmentRepository}
 import ems.domains.reservations.tags.{UnvalidatedReservation, ValidatedReservation}
-import ems.domains.{DomainError, EquipmentOutOfStock}
+import ems.domains.{DomainError}
 
 class ReservationService(equipmentRepository: EquipmentRepository) {
 
@@ -15,8 +14,8 @@ class ReservationService(equipmentRepository: EquipmentRepository) {
     for {
       validated <- validate(unvalidatedReservation).handleError
       equipment <- equipmentRepository.findById(validated.equipmentId).handleError
-      checked <- checkEquipment(equipment).handleError
-      _ <- storeEquipment(checked).handleError
+      preReservedEquipment = Equipment.preReserve(equipment)
+      _ <- storeEquipment(preReservedEquipment).handleError
     } yield ()
 
     ???
@@ -24,12 +23,6 @@ class ReservationService(equipmentRepository: EquipmentRepository) {
 
   def validate(unvalidated: UnvalidatedReservation): Result[DomainError, ValidatedReservation] = ???
 
-  def checkEquipment(equipment: Equipment): Result[DomainError, EquipmentChecked] =
-    equipment.state match {
-      case EquipmentState.Possible => Result.success(EquipmentChecked(Equipment.preReserve(equipment)))
-      case _ => Result.error(EquipmentOutOfStock(equipment))
-    }
-
-  def storeEquipment(checkedEquipment: EquipmentChecked): Result[DomainError, Unit] = ??? // TODO: return a result
+  def storeEquipment(equipment: Equipment): Result[DomainError, Unit] = ??? // TODO: return a result
 
 }

@@ -1,6 +1,7 @@
 package ems.core.types
 
 import cats.data.EitherT
+import ems.domains.equipments.EquipmentError
 import ems.domains.{DomainError, EntityNotFound, Id}
 import monix.eval.Task
 
@@ -15,6 +16,9 @@ object Result {
   def error[E, A](error: E): Result[E, A] = Task {
     Left(error)
   }
+
+  type EquipmentResult[A] = Either[EquipmentError, A]
+
 
   object syntax {
 //    implicit class ResultOps[E, A](result: Result[E, A]) {
@@ -32,9 +36,9 @@ object Result {
         optValue.map(Right(_)).getOrElse(Left(EntityNotFound(id)))
     }
 
-    implicit class AsyncOptionOps[A](asyncResult: Result[DomainError, Option[A]]) {
+    implicit class ResultOptionOps[A](result: Result[DomainError, Option[A]]) {
       def orNotFound(id: Id[A]): Result[DomainError, A] =
-        asyncResult.map {
+        result.map {
           case Right(optValue) => optValue orNotFound id
           case Left(error) => Left(error)
         }
