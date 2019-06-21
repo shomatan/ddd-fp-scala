@@ -7,7 +7,8 @@ case class EquipmentName(value: String) extends AnyVal
 case class Equipment(
   id: Id[Equipment],
   name: EquipmentName,
-  placeId: Id[Place]
+  placeId: Id[Place],
+  state: EquipmentState
 ) extends Entity[Equipment]
 
 
