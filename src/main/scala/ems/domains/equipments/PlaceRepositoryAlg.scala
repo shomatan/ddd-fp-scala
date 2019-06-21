@@ -1,10 +1,10 @@
 package ems.domains.equipments
 
-import ems.core.types.Result.AsyncResult
-import ems.domains.Id
+import ems.core.types.Result.Result
+import ems.domains.{DomainError, Id}
 
 trait PlaceRepositoryAlg {
-  def findById(id: Id[Place]): AsyncResult[EquipmentError, Option[Place]]
-  def store(place: Place): AsyncResult[EquipmentError, Place]
-  def delete(place: Place): AsyncResult[EquipmentError, Unit]
+  def findById(id: Id[Place]): Result[DomainError, Option[Place]]
+  def store(place: Place): Result[DomainError, Place]
+  def delete(place: Place): Result[DomainError, Unit]
 }
