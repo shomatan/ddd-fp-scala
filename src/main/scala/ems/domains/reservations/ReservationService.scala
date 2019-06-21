@@ -14,7 +14,7 @@ class ReservationService(equipmentRepository: EquipmentRepository) {
 
     for {
       validated <- validate(unvalidatedReservation).handleError
-      equipment <- findEquipment(validated).handleError
+      equipment <- equipmentRepository.findById(validated.equipmentId).handleError
       checked <- checkEquipment(equipment).handleError
       _ <- storeEquipment(checked).handleError
     } yield ()
@@ -23,9 +23,6 @@ class ReservationService(equipmentRepository: EquipmentRepository) {
   }
 
   def validate(unvalidated: UnvalidatedReservation): Result[DomainError, ValidatedReservation] = ???
-
-  def findEquipment(validatedReservation: ValidatedReservation): Result[DomainError, Equipment] =
-    equipmentRepository.findById(validatedReservation.equipmentId) orNotFound validatedReservation.equipmentId
 
   def checkEquipment(equipment: Equipment): Result[DomainError, EquipmentChecked] =
     equipment.state match {
