@@ -1,13 +1,12 @@
 package domains.equipments
 
-import cats.Monad
 import core.types.Result.Result
 import domains.equipments.tags.{UnValidatedEquipment, ValidatedEquipment}
 
-class EquipmentService[F[_]: Monad](equipmentRepositoryAlg: EquipmentRepositoryAlg[F],
-                                    placeRepositoryAlg: PlaceRepositoryAlg[F]) {
+class EquipmentService(equipmentRepositoryAlg: EquipmentRepositoryAlg,
+                       placeRepositoryAlg: PlaceRepositoryAlg) {
 
-  def create(equipment: UnValidatedEquipment): Result[F, EquipmentError, ValidatedEquipment] = {
+  def create(equipment: UnValidatedEquipment): Result[EquipmentError, ValidatedEquipment] = {
 //    for {
 //      created <- equipmentRepositoryAlg.store(equipment).handleError
 //    } yield created
