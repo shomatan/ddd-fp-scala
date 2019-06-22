@@ -24,19 +24,17 @@ class ReservationService(equipmentRepository: EquipmentRepository,
     val unvalidated = Reservation.from(unprocessedReservation)
 
     for {
-      validated <- validate(unvalidated).handleError
-      equipment <- equipmentRepository.findById(validated.equipmentId).handleError
+      validatedReservation <- validate(unvalidated).handleError
+      equipment <- equipmentRepository.findById(validatedReservation.equipmentId).handleError
       requestingEquipment <- EitherT.fromEither[Task](Equipment.reservationRequest(equipment).toEquipmentError)
-      // needs transaction
-      storedEquipment <- storeEquipment(requestingEquipment).handleError
-//      _ <- reservationRepository.store()
-    } yield ()
-
-    ???
+      // TODO: needs transaction
+      requestedReservation <- for {
+        storedEquipment <- equipmentRepository.store (requestingEquipment).handleError
+        storedReservation <- reservationRepository.store (validatedReservation).handleError
+      } yield RequestedReservation(storedEquipment, storedReservation)
+    } yield ReservationRequested(data = requestedReservation)
   }
 
   def validate(unvalidated: UnvalidatedReservation): Result[DomainError, ValidatedReservation] = ???
-
-  def storeEquipment(equipment: Equipment): Result[DomainError, Equipment] = ???
 
 }
