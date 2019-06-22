@@ -19,7 +19,6 @@ object Result {
 
   type EquipmentResult[A] = Either[EquipmentError, A]
 
-
   object syntax {
 //    implicit class ResultOps[E, A](result: Result[E, A]) {
 //      def handleError: EitherT[E, A] =

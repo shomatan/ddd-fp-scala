@@ -1,21 +1,35 @@
 package ems.domains.reservations
 
-import ems.core.types.Result.Result
+import cats.data.EitherT
+import ems.core.types.Result.{EquipmentResult, Result}
+import ems.domains.{DomainError, InEquipment}
 import ems.domains.equipments.{Equipment, EquipmentRepository}
-import ems.domains.reservations.tags.{UnvalidatedReservation, ValidatedReservation}
-import ems.domains.{DomainError}
+import ems.domains.reservations.tags.ValidatedReservation
+import monix.eval.Task
 
-class ReservationService(equipmentRepository: EquipmentRepository) {
+class ReservationService(equipmentRepository: EquipmentRepository,
+                         reservationRepository: ReservationRepository) {
 
   import ems.core.types.Result.syntax._
 
-  def reserve(unvalidatedReservation: UnvalidatedReservation): Result[DomainError, Reservation] = {
+  implicit class EquipmentOps[A](result: EquipmentResult[A]) {
+    def toEquipmentError: Either[DomainError, A] =
+      result match {
+        case Right(value) => Right(value)
+        case Left(error) => Left(InEquipment(error))
+      }
+  }
+
+  def requestReservation(unprocessedReservation: UnprocessedReservation): Result[DomainError, ReservationRequested] = {
+    val unvalidated = Reservation.from(unprocessedReservation)
 
     for {
-      validated <- validate(unvalidatedReservation).handleError
+      validated <- validate(unvalidated).handleError
       equipment <- equipmentRepository.findById(validated.equipmentId).handleError
-      preReservedEquipment = Equipment.preReserve(equipment)
-      _ <- storeEquipment(preReservedEquipment).handleError
+      requestingEquipment <- EitherT.fromEither[Task](Equipment.reservationRequest(equipment).toEquipmentError)
+      // needs transaction
+      storedEquipment <- storeEquipment(requestingEquipment).handleError
+//      _ <- reservationRepository.store()
     } yield ()
 
     ???
@@ -23,6 +37,6 @@ class ReservationService(equipmentRepository: EquipmentRepository) {
 
   def validate(unvalidated: UnvalidatedReservation): Result[DomainError, ValidatedReservation] = ???
 
-  def storeEquipment(equipment: Equipment): Result[DomainError, Unit] = ??? // TODO: return a result
+  def storeEquipment(equipment: Equipment): Result[DomainError, Equipment] = ???
 
 }
