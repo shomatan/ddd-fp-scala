@@ -10,13 +10,13 @@ case class Reservation(
 ) extends Entity[Reservation]
 
 object Reservation {
-  def from(unprocessedReservation: UnprocessedReservation): UnvalidatedReservation =
+  def from(incomingReservation: IncomingReservation): UnvalidatedReservation =
     UnvalidatedReservation(
-      equipmentId = unprocessedReservation.equipmentId,
+      equipmentId = incomingReservation.equipmentId,
     )
 }
 
-case class UnprocessedReservation(
+case class IncomingReservation(
   equipmentId: Id[Equipment]
 )
 
