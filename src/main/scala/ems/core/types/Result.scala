@@ -20,14 +20,21 @@ object Result {
   type EquipmentResult[A] = Either[EquipmentError, A]
 
   object syntax {
-//    implicit class ResultOps[E, A](result: Result[E, A]) {
-//      def handleError: EitherT[E, A] =
-//        EitherT(result)
-//    }
 
     implicit class ResultOps[E, A](result: Result[E, A]) {
       def handleError: EitherT[Task, E, A] =
         EitherT(result)
+
+      def mapError[E2](f: E => E2): Result[E2, A] =
+        result.flatMap { inner =>
+          inner.fold(
+            error => Result.error(f(error)),
+            data => Result.success(data)
+          )
+        }
+
+      def fromEither(result: Either[E, A]): EitherT[Task, E, A] =
+        EitherT.fromEither[Task](result)
     }
 
     implicit class OptionOps[A](optValue: Option[A]) {
