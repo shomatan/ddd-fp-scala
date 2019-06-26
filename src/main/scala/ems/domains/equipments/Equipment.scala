@@ -1,8 +1,7 @@
 package ems.domains.equipments
 
-import ems.core.types.Result.EquipmentResult
 import ems.domains.equipments.EquipmentState.Free
-import ems.domains.{Entity, Id}
+import ems.domains.{DomainError, Entity, Id, InvalidEquipmentState}
 
 case class EquipmentName(value: String) extends AnyVal
 
@@ -14,12 +13,12 @@ case class Equipment(
 ) extends Entity[Equipment]
 
 object Equipment {
-  def reservationRequest(equipment: Equipment): EquipmentResult[Equipment] =
+  def reservationRequest(equipment: Equipment): Either[DomainError, Equipment] =
     equipment.state match {
       case Free =>
         Right(equipment.copy(state = EquipmentState.Requesting))
       case other =>
-        Left(InvalidState(other))
+        Left(InvalidEquipmentState(other))
     }
 }
 

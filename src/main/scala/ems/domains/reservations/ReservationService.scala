@@ -1,12 +1,9 @@
 package ems.domains.reservations
 
-import cats.data.EitherT
-import ems.core.types.Result
-import ems.core.types.Result.{EquipmentResult, Result}
-import ems.domains.{DomainError, InEquipment}
-import ems.domains.equipments.{Equipment, EquipmentError, EquipmentRepository}
+import ems.core.types.Result.Result
+import ems.domains.DomainError
+import ems.domains.equipments.{Equipment, EquipmentRepository}
 import ems.domains.reservations.tags.ValidatedReservation
-import monix.eval.Task
 
 class ReservationService(equipmentRepository: EquipmentRepository,
                          reservationRepository: ReservationRepository) {
@@ -19,13 +16,7 @@ class ReservationService(equipmentRepository: EquipmentRepository,
     val result = for {
       validatedReservation <- validate(unvalidated).handleError
       equipment <- equipmentRepository.findById(validatedReservation.equipmentId).handleError
-      requestingEquipment <- {
-
-        val a = Equipment.reservationRequest(equipment).fromEither
-
-        a
-        ???
-      }
+      requestingEquipment <- Equipment.reservationRequest(equipment).fromEither.value.handleError
       // TODO: needs transaction
       requestedReservation <- for {
         storedEquipment <- equipmentRepository.store(requestingEquipment).handleError
