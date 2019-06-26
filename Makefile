@@ -7,7 +7,7 @@ JAR_NAME          = ddd-fp-scala.jar
 build:  ## Build to jar file
 	@sbt clean test assembly
 
-native: ## Build to native image
+native: ## Build jar file to native image
 	@if ! `docker images | grep -q $(DOCKER_IMAGE_NAME)`; then \
 		docker build -t $(DOCKER_IMAGE_NAME) docker/; \
 	fi
