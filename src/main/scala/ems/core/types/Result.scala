@@ -1,7 +1,6 @@
 package ems.core.types
 
 import cats.data.EitherT
-import ems.domains.equipments.EquipmentError
 import ems.domains.{DomainError, EntityNotFound, Id}
 import monix.eval.Task
 
@@ -17,17 +16,24 @@ object Result {
     Left(error)
   }
 
-  type EquipmentResult[A] = Either[EquipmentError, A]
-
   object syntax {
-//    implicit class ResultOps[E, A](result: Result[E, A]) {
-//      def handleError: EitherT[E, A] =
-//        EitherT(result)
-//    }
+
+    implicit class EitherOps[E, A](result: Either[E, A]) {
+      def fromEither: EitherT[Task, E, A] =
+        EitherT.fromEither[Task](result)
+    }
 
     implicit class ResultOps[E, A](result: Result[E, A]) {
       def handleError: EitherT[Task, E, A] =
         EitherT(result)
+
+      def mapError[E2](f: E => E2): Result[E2, A] =
+        result.flatMap { inner =>
+          inner.fold(
+            error => Result.error(f(error)),
+            data => Result.success(data)
+          )
+        }
     }
 
     implicit class OptionOps[A](optValue: Option[A]) {
