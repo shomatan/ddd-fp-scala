@@ -4,7 +4,7 @@ import ems.core.types.Result
 import ems.core.types.Result.Result
 import ems.domains.DomainError
 import ems.domains.equipments.{Equipment, EquipmentRepository}
-import ems.domains.reservations.tags.ValidatedReservation
+import ems.domains.reservations.ReservationTags.ValidatedReservation
 
 class ReservationService(equipmentRepository: EquipmentRepository,
                          reservationRepository: ReservationRepository) {
