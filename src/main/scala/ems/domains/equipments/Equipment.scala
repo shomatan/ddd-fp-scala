@@ -5,6 +5,7 @@ import ems.domains.{DomainError, Entity, Id, InvalidEquipmentState}
 
 case class EquipmentName(value: String) extends AnyVal
 
+// What about the stock ?
 case class Equipment(
   id: Id[Equipment],
   name: EquipmentName,

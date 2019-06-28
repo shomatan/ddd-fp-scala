@@ -1,5 +1,6 @@
 package ems.domains.reservations
 
+import ems.core.types.Result
 import ems.core.types.Result.Result
 import ems.domains.DomainError
 import ems.domains.equipments.{Equipment, EquipmentRepository}
@@ -16,8 +17,16 @@ class ReservationService(equipmentRepository: EquipmentRepository,
     val result = for {
       validatedReservation <- validate(unvalidated).handleError
       equipment <- equipmentRepository.findById(validatedReservation.equipmentId).handleError
-      requestingEquipment <- Equipment.reservationRequest(equipment).fromEither.value.handleError
+      requestingEquipment <- Result.fromEither(Equipment.reservationRequest(equipment)).handleError
       // TODO: needs transaction
+      // Depends if you ends up using domain events or not
+      // could be simple as if not using eve
+      // transactionally {
+      //   for {
+      //      storedEquipment <- equipmentRepository.store(requestingEquipment).handleError
+      //      storedReservation <- reservationRepository.store(validatedReservation).handleError
+      //   } yield RequestedReservation(storedEquipment, storedReservation)
+      // }
       requestedReservation <- for {
         storedEquipment <- equipmentRepository.store(requestingEquipment).handleError
         storedReservation <- reservationRepository.store(validatedReservation).handleError

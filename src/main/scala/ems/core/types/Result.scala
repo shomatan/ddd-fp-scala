@@ -16,12 +16,10 @@ object Result {
     Left(error)
   }
 
-  object syntax {
+  def fromEither[E, A](result: Either[E, A]): Result[E, A] =
+    Task(result)
 
-    implicit class EitherOps[E, A](result: Either[E, A]) {
-      def fromEither: EitherT[Task, E, A] =
-        EitherT.fromEither[Task](result)
-    }
+  object syntax {
 
     implicit class ResultOps[E, A](result: Result[E, A]) {
       def handleError: EitherT[Task, E, A] =
@@ -44,7 +42,7 @@ object Result {
     implicit class ResultOptionOps[A](result: Result[DomainError, Option[A]]) {
       def orNotFound(id: Id[A]): Result[DomainError, A] =
         result.map {
-          case Right(optValue) => optValue orNotFound id
+          case Right(optValue) => optValue.orNotFound(id)
           case Left(error) => Left(error)
         }
     }
