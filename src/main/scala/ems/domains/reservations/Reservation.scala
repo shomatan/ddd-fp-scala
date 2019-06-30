@@ -1,7 +1,7 @@
 package ems.domains.reservations
 
 import ems.domains.equipments.Equipment
-import ems.domains.{Command, Entity, Id}
+import ems.domains.{Entity, Id}
 
 // Reservation is a domain entity
 // One reservation is linked to one equipment here
@@ -40,9 +40,3 @@ case class RequestedReservation(
   equipment: Equipment,
   reservation: Reservation
 )
-
-// This name sounds more like an event than a command to me
-// The name is already in the past
-case class ReservationRequested(
-  data: RequestedReservation
-) extends Command[RequestedReservation]

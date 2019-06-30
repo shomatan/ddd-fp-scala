@@ -11,7 +11,7 @@ class ReservationService(equipmentRepository: EquipmentRepository,
 
   import ems.core.types.Result.syntax._
 
-  def requestReservation(incomingReservation: IncomingReservation): Result[DomainError, ReservationRequested] = {
+  def requestReservation(incomingReservation: IncomingReservation): Result[DomainError, RequestedReservation] = {
     val unvalidated = Reservation.from(incomingReservation)
 
     val result = for {
@@ -31,7 +31,7 @@ class ReservationService(equipmentRepository: EquipmentRepository,
         storedEquipment <- equipmentRepository.store(requestingEquipment).handleError
         storedReservation <- reservationRepository.store(validatedReservation).handleError
       } yield RequestedReservation(storedEquipment, storedReservation)
-    } yield ReservationRequested(data = requestedReservation)
+    } yield requestedReservation
 
     result.value
   }
