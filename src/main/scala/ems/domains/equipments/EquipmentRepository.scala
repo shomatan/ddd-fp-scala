@@ -1,7 +1,7 @@
 package ems.domains.equipments
 
 import ems.core.types.Result.Result
-import ems.domains.{DomainError, Id}
+import ems.domains.Id
 
 // If you read the chapter about how to not design from the database
 // This part make no sense anymore
@@ -10,11 +10,14 @@ import ems.domains.{DomainError, Id}
 // and free you from tighing your application to the storage
 // Storage should just be a way to gather data and store it
 trait EquipmentRepository {
-  import ems.core.types.Result.syntax._
 
-  def findById(id: Id[Equipment]): Result[DomainError, Equipment] = findByIdOpt(id) orNotFound id
+  def findById(id: Id[Equipment]): Result[EquipmentError, Equipment] =
+    findByIdOpt(id).map {
+      case Right(value) => value.map(Right(_)).getOrElse(Left(EquipmentNotFound(id)))
+      case Left(error) => Left(error)
+    }
 
-  def findByIdOpt(id: Id[Equipment]): Result[DomainError, Option[Equipment]]
-  def store(equipment: Equipment): Result[DomainError, Equipment]
-  def delete(equipment: Equipment): Result[DomainError, Unit]
+  def findByIdOpt(id: Id[Equipment]): Result[EquipmentError, Option[Equipment]]
+  def store(equipment: Equipment): Result[EquipmentError, Equipment]
+  def delete(equipment: Equipment): Result[EquipmentError, Unit]
 }
