@@ -1,7 +1,6 @@
 package ems.core.types
 
 import cats.data.EitherT
-import ems.domains.{DomainError, EntityNotFound, Id}
 import monix.eval.Task
 
 object Result {
@@ -16,12 +15,10 @@ object Result {
     Left(error)
   }
 
-  object syntax {
+  def fromEither[E, A](result: Either[E, A]): Result[E, A] =
+    Task(result)
 
-    implicit class EitherOps[E, A](result: Either[E, A]) {
-      def fromEither: EitherT[Task, E, A] =
-        EitherT.fromEither[Task](result)
-    }
+  object syntax {
 
     implicit class ResultOps[E, A](result: Result[E, A]) {
       def handleError: EitherT[Task, E, A] =
@@ -36,17 +33,17 @@ object Result {
         }
     }
 
-    implicit class OptionOps[A](optValue: Option[A]) {
-      def orNotFound(id: Id[A]): Either[DomainError, A] =
-        optValue.map(Right(_)).getOrElse(Left(EntityNotFound(id)))
-    }
-
-    implicit class ResultOptionOps[A](result: Result[DomainError, Option[A]]) {
-      def orNotFound(id: Id[A]): Result[DomainError, A] =
-        result.map {
-          case Right(optValue) => optValue orNotFound id
-          case Left(error) => Left(error)
-        }
-    }
+//    implicit class OptionOps[A](optValue: Option[A]) {
+//      def orNotFound(id: Id[A]): Either[ReservationError, A] =
+//        optValue.map(Right(_)).getOrElse(Left(EntityNotFound(id)))
+//    }
+//
+//    implicit class ResultOptionOps[A](result: Result[ReservationError, Option[A]]) {
+//      def orNotFound(id: Id[A]): Result[ReservationError, A] =
+//        result.map {
+//          case Right(optValue) => optValue.orNotFound(id)
+//          case Left(error) => Left(error)
+//        }
+//    }
   }
 }

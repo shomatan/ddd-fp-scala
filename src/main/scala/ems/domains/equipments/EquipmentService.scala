@@ -1,12 +1,12 @@
 package ems.domains.equipments
 
 import ems.core.types.Result.Result
-import ems.domains.DomainError
+import ems.domains.reservations.ReservationError
 
 class EquipmentService(equipmentRepositoryAlg: EquipmentRepository,
                        placeRepositoryAlg: PlaceRepository) {
 
-  def create(equipment: Equipment): Result[DomainError, Equipment] = {
+  def create(equipment: Equipment): Result[ReservationError, Equipment] = {
 //    for {
 //      created <- equipmentRepositoryAlg.store(equipment).handleError
 //    } yield created
