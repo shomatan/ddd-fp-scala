@@ -1,6 +1,6 @@
 package ems.domains.equipments
 
-import ems.core.types.Result.Result
+import ems.shared.Result.Result
 import ems.domains.reservations.ReservationError
 
 class EquipmentService(equipmentRepositoryAlg: EquipmentRepository,

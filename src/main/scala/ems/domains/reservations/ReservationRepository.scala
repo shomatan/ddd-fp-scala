@@ -1,6 +1,6 @@
 package ems.domains.reservations
 
-import ems.core.types.Result.Result
+import ems.shared.Result.Result
 import ems.domains.equipments.Equipment
 import ems.domains.reservations.ReservationTags.ValidatedReservation
 

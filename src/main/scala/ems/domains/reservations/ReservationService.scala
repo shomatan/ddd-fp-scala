@@ -1,14 +1,14 @@
 package ems.domains.reservations
 
-import ems.core.types.Result
-import ems.core.types.Result.Result
+import ems.shared.Result
+import ems.shared.Result.Result
 import ems.domains.equipments.{Equipment, EquipmentRepository}
 import ems.domains.reservations.ReservationTags.ValidatedReservation
 
 class ReservationService(equipmentRepository: EquipmentRepository,
                          reservationRepository: ReservationRepository) {
 
-  import ems.core.types.Result.syntax._
+  import ems.shared.Result.syntax._
 
   def requestReservation(incomingReservation: IncomingReservation): Result[ReservationError, RequestedReservation] = {
     val unvalidated = Reservation.from(incomingReservation)

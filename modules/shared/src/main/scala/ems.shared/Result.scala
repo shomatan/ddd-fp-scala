@@ -1,4 +1,4 @@
-package ems.core.types
+package ems.shared
 
 import cats.data.EitherT
 import monix.eval.Task

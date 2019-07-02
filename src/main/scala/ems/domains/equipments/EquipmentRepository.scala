@@ -1,6 +1,6 @@
 package ems.domains.equipments
 
-import ems.core.types.Result.Result
+import ems.shared.Result.Result
 import ems.domains.Id
 
 // If you read the chapter about how to not design from the database
