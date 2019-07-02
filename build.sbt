@@ -4,13 +4,8 @@ lazy val commonSettings = Seq(
   version := "0.1.0",
   scalaVersion := "2.12.8",
   javacOptions ++= Seq("-encoding", "UTF-8"),
-  test in assembly := {}
-)
-
-lazy val root = (project in file("."))
-  .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= {
+  test in assembly := {},
+  libraryDependencies ++= {
     val catsVersion = "2.0.0-M4"
     val monixVersion = "3.0.0-RC3"
     Seq(
@@ -24,8 +19,16 @@ lazy val root = (project in file("."))
       "com.chuusai"   %% "shapeless"      % "2.3.3",
       "org.scalatest" %% "scalatest"      % "3.0.8"       % "test"
     )
-  },
-  assemblyJarName in assembly := {
-    s"${name.value}.jar"
-  } 
+  }
 )
+
+lazy val `user-domain` = (project in file("modules/user/domain"))
+  .settings(commonSettings)
+
+lazy val root = (project in file("."))
+  .settings(commonSettings)
+  .settings(
+    assemblyJarName in assembly := {
+      s"${name.value}.jar"
+    }
+  )
