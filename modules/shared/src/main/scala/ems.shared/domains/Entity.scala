@@ -1,4 +1,4 @@
-package ems.domains
+package ems.shared.domains
 
 trait Entity[T] {
 

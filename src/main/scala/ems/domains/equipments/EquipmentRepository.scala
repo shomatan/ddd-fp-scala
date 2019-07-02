@@ -1,7 +1,7 @@
 package ems.domains.equipments
 
 import ems.shared.Result.Result
-import ems.domains.Id
+import ems.shared.domains.Id
 
 // If you read the chapter about how to not design from the database
 // This part make no sense anymore

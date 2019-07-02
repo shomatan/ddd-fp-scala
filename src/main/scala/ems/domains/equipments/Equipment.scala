@@ -1,8 +1,8 @@
 package ems.domains.equipments
 
 import ems.domains.equipments.EquipmentState.Free
-import ems.domains.reservations.{ReservationError, InvalidEquipmentState}
-import ems.domains.{Entity, Id}
+import ems.domains.reservations.{InvalidEquipmentState, ReservationError}
+import ems.shared.domains.{Entity, Id}
 
 case class EquipmentName(value: String) extends AnyVal
 

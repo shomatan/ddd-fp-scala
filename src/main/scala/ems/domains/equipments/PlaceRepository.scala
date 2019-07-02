@@ -1,8 +1,8 @@
 package ems.domains.equipments
 
 import ems.shared.Result.Result
-import ems.domains.Id
 import ems.domains.reservations.ReservationError
+import ems.shared.domains.Id
 
 trait PlaceRepository {
   def findById(id: Id[Place]): Result[ReservationError, Option[Place]]

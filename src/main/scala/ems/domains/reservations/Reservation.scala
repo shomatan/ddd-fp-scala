@@ -1,7 +1,7 @@
 package ems.domains.reservations
 
 import ems.domains.equipments.Equipment
-import ems.domains.{Entity, Id}
+import ems.shared.domains.{Entity, Id}
 
 // Reservation is a domain entity
 // One reservation is linked to one equipment here

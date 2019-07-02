@@ -1,7 +1,7 @@
 package ems.domains.reservations
 
-import ems.domains.Id
 import ems.domains.equipments.{Equipment, EquipmentState}
+import ems.shared.domains.Id
 
 // Not really fan of this name it doesn't give an insight
 // of what it should represent
