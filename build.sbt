@@ -22,8 +22,12 @@ lazy val commonSettings = Seq(
   }
 )
 
+lazy val shared = (project in file("modules/shared"))
+  .settings(commonSettings)
+
 lazy val `user-domain` = (project in file("modules/user/domain"))
   .settings(commonSettings)
+  .dependsOn(shared)
 
 lazy val root = (project in file("."))
   .settings(commonSettings)
@@ -32,3 +36,4 @@ lazy val root = (project in file("."))
       s"${name.value}.jar"
     }
   )
+  .dependsOn(shared)
