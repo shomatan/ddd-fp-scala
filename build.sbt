@@ -12,12 +12,12 @@ lazy val commonSettings = Seq(
       "org.typelevel" %% "cats-core"      % catsVersion,
       "org.typelevel" %% "cats-kernel"    % catsVersion,
       "org.typelevel" %% "cats-macros"    % catsVersion,
-      "org.typelevel" %% "cats-free"      % catsVersion,
       "io.monix"      %% "monix"          % monixVersion,
       "io.monix"      %% "monix-eval"     % monixVersion,
       "io.monix"      %% "monix-reactive" % monixVersion,
       "com.chuusai"   %% "shapeless"      % "2.3.3",
-      "org.scalatest" %% "scalatest"      % "3.0.8"       % "test"
+      // Test
+      "org.scalatest" %% "scalatest" % "3.0.8" % "test"
     )
   }
 )
